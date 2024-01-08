@@ -1,6 +1,8 @@
 package com.ronaldtdas.lightplayer;
 
 import javafx.application.Application;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,6 +17,7 @@ import java.io.File;
 public class App extends Application {
 
     private MediaPlayer mediaPlayer;
+    @FXML
     private Label statusLabel;
 
     public static void main(String[] args) {
@@ -22,30 +25,25 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("App.fxml"));
+        VBox root = loader.load();
+        Scene scene = new Scene(root, 300, 150);
+
+        // Set the controller for the FXML file
+        App controller = loader.getController();
+        controller.setStatusLabel((Label) scene.lookup("#statusLabel"));
+
         primaryStage.setTitle("Audio Player");
-
-        // Create a button to open an audio file
-        Button openButton = new Button("Open File");
-        openButton.setOnAction(e -> openFile());
-
-
-
-        // Create a label to display the status
-        statusLabel = new Label("No file selected");
-
-        // Add components to the layout
-        VBox layout = new VBox(10);
-        layout.getChildren().addAll(openButton, statusLabel);
-
-        // Add the layout to the scene
-        primaryStage.setScene(new Scene(layout, 300, 150));
-
+        primaryStage.setScene(scene);
         primaryStage.show();
+    }
+    public void setStatusLabel(Label statusLabel) {
+        this.statusLabel = statusLabel;
     }
 
 
-
+    @FXML
     private void openFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Audio File");
