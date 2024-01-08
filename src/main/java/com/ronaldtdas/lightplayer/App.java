@@ -194,6 +194,22 @@ public class App extends Application {
 
         // Start playing the audio
         mediaPlayer.play();
+
+        // Update album art
+        updateAlbumArt(media);
+    }
+
+    private void updateAlbumArt(Media media) {
+        if (media.getMetadata().containsKey("image")) {
+            // Get the album art image from metadata
+            Image albumArtImage = (Image) media.getMetadata().get("image");
+            getAlbumArt().setImage(albumArtImage);
+        } else {
+            // If no album art in metadata, use a default image
+            String defaultImagePath = "/img/albumart.jpg";
+            Image defaultAlbumArt = new Image(getClass().getResourceAsStream(defaultImagePath));
+            getAlbumArt().setImage(defaultAlbumArt);
+        }
     }
 
 
